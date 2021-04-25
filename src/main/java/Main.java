@@ -44,20 +44,18 @@ public class Main {
             System.out.println("[Error] Something went wrong with the exporting: " + e.getMessage());
         }
 
-        System.out.println("Fertig! Bitte schaue bei einigen PDFs nach, ob alles geklappt hat. Es wurden " + PDFs_exported +"PDFs erzeugt.");
+        System.out.println("\n");
+        System.out.println("Fertig! Bitte schaue bei einigen PDFs nach, ob alles geklappt hat. Es wurden " + PDFs_exported +" PDFs erzeugt.");
     }
 
     private static void getPaths() throws Exception{
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(System.in));
-        System.out.println("test");
-        System.out.println("Den Ort einer Datei findet man am leichtesten, indem man mit rechtsklick auf sie -> Eigenschaften -> Dort Ort und Name zusammenkopieren.");
-
+        System.out.println("Den Ort einer Datei findet man am leichtesten, indem man mit Rechtsklick auf sie -> Eigenschaften -> Dort Ort und Name zusammenkopieren.");
         String tmp;
         do {
-            System.out.print("Bitte geben Sie den Pfad zum input CSV an: ");
+            System.out.print("\nBitte geben Sie den Pfad zum input CSV an: ");
             tmp = reader.readLine();
-            System.out.println(tmp);
             if(!tmp.endsWith(".csv")){
                 System.out.println("Dies ist kein Pfad zu einem CSV. Dieser müsste mit .csv enden. bitte geben sie ihn erneut an.");
             }
@@ -67,7 +65,7 @@ public class Main {
 
 
         do {
-            System.out.print("Bitte geben Sie den Pfad zum HTML Template an: ");
+            System.out.print("\nBitte geben Sie den Pfad zum HTML Template an: ");
             tmp = reader.readLine();
             if(!tmp.endsWith(".html")){
                 System.out.println("Dies ist kein Pfad zu einem HTML file. Dieser müsste mit .html enden. bitte geben sie ihn erneut an.");
@@ -77,9 +75,10 @@ public class Main {
 
 
         do {
-            System.out.print("Bitte geben Sie den Pfad zum Ausgabeverzeichnis an: ");
+            System.out.print("\nBitte geben Sie den Pfad zum Ausgabeverzeichnis an: ");
             tmp = reader.readLine();
         }while(tmp.isEmpty());
         pathOutputDirectory = tmp;
+        System.out.println("\n");
     }
 }

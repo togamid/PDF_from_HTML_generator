@@ -37,7 +37,7 @@ public class TestingResult {
             if(entry.length < numberOfValues){
                 System.out.println("[Error] Skipped invalid entry!");
             }
-            results.add(new TestingResult(entry)); //TODO
+            results.add(new TestingResult(entry));
         }
 
         return results;

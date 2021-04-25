@@ -14,7 +14,6 @@ public class HtmlManipulator {
         File input = new File(path);
         baseDoc = Jsoup.parse(input, "UTF-8", "http://example.com/");
     }
-    //TODO als .jre parsen
 
 
     public String insertValues(TestingResult result) {
