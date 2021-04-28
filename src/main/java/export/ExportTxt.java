@@ -1,7 +1,6 @@
 package export;
 
 import objects.TestingResult;
-import objects.TestingResult;
 
 import java.io.File;
 import java.io.FileWriter;

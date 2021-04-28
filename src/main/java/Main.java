@@ -1,4 +1,5 @@
 
+import email.Email;
 import export.ExportPDF;
 
 import importData.CSVImporter;
@@ -44,8 +45,12 @@ public class Main {
             System.out.println("[Error] Something went wrong with the exporting: " + e.getMessage());
         }
 
+        Email.initSession("username", "password", "smtp_host"); //TODO, richtigen Server nehmen
+        int emails_sent = Email.sendEmails(results);
+
+
         System.out.println("\n");
-        System.out.println("Fertig! Bitte schaue bei einigen PDFs nach, ob alles geklappt hat. Es wurden " + PDFs_exported +" PDFs erzeugt.");
+        System.out.println("Fertig! Bitte schaue bei einigen PDFs nach, ob alles geklappt hat. Es wurden " + PDFs_exported +" PDFs erzeugt und "+ emails_sent+" Emails gesendet.");
     }
 
     private static void getPaths() throws Exception{

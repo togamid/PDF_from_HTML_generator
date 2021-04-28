@@ -11,8 +11,7 @@ import java.util.List;
 public class CSVImporter {
 
     public static List<String[]> importCSV(String path) throws Exception{
-        Reader reader = new BufferedReader(new FileReader(path)); /*Paths.get(
-        ClassLoader.getSystemResource(path).toURI())*/
+        Reader reader = new BufferedReader(new FileReader(path));
         return readAll(reader);
     }
 
@@ -24,7 +23,9 @@ public class CSVImporter {
         list = csvReader.readAll();
         reader.close();
         csvReader.close();
-        list.remove(0);
+        if(list.get(0)[0].equals("Nachname")){
+            list.remove(0);
+        }
         return list;
     }
 
