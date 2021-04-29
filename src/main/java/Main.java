@@ -7,11 +7,14 @@ import objects.TestingResult;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class Main {
     private static String pathInput;
-    private static String pathTemplate;
+    private static String pathTemplate = "template.pdf";
     private static String pathOutputDirectory;
 
     public static void main(String[] args){
@@ -21,6 +24,7 @@ public class Main {
             getPaths();
         } catch (Exception e){
             System.out.println("[Error] Something went wrong during the initialisation dialogue: " + e.getMessage());
+            return;
         }
 
         //load the values from the CSV
@@ -45,6 +49,8 @@ public class Main {
             System.out.println("[Error] Something went wrong with the exporting: " + e.getMessage());
         }
 
+        System.out.println(PDFs_exported + " PDFs erzeugt. Versende E-Mails...");
+
         Email.initSession("username", "password", "smtp_host"); //TODO, richtigen Server nehmen
         int emails_sent = Email.sendEmails(results);
 
@@ -68,15 +74,17 @@ public class Main {
         pathInput = tmp;
 
 
-
-        do {
-            System.out.print("\nBitte geben Sie den Pfad zum HTML Template an: ");
-            tmp = reader.readLine();
-            if(!tmp.endsWith(".html")){
-                System.out.println("Dies ist kein Pfad zu einem HTML file. Dieser müsste mit .html enden. bitte geben sie ihn erneut an.");
-            }
-        }while(tmp.isEmpty());
-        pathTemplate = tmp;
+        Path directoryPath = Paths.get(pathTemplate);
+        if(!Files.exists(directoryPath)) {
+            do {
+                System.out.print("\nBitte geben Sie den Pfad zum PDF Template an: ");
+                tmp = reader.readLine();
+                if (!tmp.endsWith(".pdf")) {
+                    System.out.println("Dies ist kein Pfad zu einem PDF file. Dieser müsste mit .pdf enden. Bitte geben sSe ihn erneut an.");
+                }
+            } while (tmp.isEmpty());
+            pathTemplate = tmp;
+        }
 
 
         do {

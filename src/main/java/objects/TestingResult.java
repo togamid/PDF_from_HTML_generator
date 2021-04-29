@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestingResult {
-    private static final int numberOfValues = 12;
+    //private static final int numberOfValues = 12;
+    private static final int numberOfValues = 15;
     private String pathPDF;
     public final String lastname;
     public final String firstname;
@@ -20,9 +21,11 @@ public class TestingResult {
     public final String date;
     public final String time;
     public final String result;
+    public final String resultLong;
     public final String usedTest;
     public final String testManufacturer;
     public TestingResult(String[] values){
+        /*
         this.lastname = values[0];
         this.firstname = values[1];
         this.street = values[2];
@@ -36,6 +39,33 @@ public class TestingResult {
         this.usedTest = values[10];
         this.testManufacturer = values[11];
 
+         */
+        this.lastname = values[1];
+        this.firstname = values[2];
+        this.birthdate = values[3];
+        this.street = values[4] + " " + values[5];
+        this.city = values[6] + " " + values[7];
+        this.telnr = values[8];
+        this.email= values[9];
+        this.date = values[10];
+        this.time = values[11];
+        this.result = values[12];
+        this.usedTest = values[13];
+        this.testManufacturer = values[14];
+
+        switch (this.result) {
+            case "N":
+                resultLong = "negativ";
+                break;
+            case "P":
+                resultLong = "positiv";
+                break;
+            case "U":
+                resultLong = "nicht auswertbar";
+                break;
+            default:
+                resultLong = "N/A";
+        }
     }
 
     public String getPDFLocation(){
@@ -62,9 +92,10 @@ public class TestingResult {
         List<TestingResult> results = new ArrayList<>();
         for(String[] entry : stringArrayList){
             if(entry.length < numberOfValues){
-                System.out.println("[Error] Skipped invalid entry!");
+                System.out.println("[Error] Skipped invalid entry! Length: "+ entry.length);
+            } else {
+                results.add(new TestingResult(entry));
             }
-            results.add(new TestingResult(entry));
         }
 
         return results;

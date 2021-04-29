@@ -5,11 +5,8 @@ import objects.TestingResult;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
 import javax.activation.DataSource;
-import javax.mail.internet.MimeMultipart;
 import java.util.List;
 import java.util.Properties;
 
@@ -18,9 +15,11 @@ public class Email {
     private static Session session;
     private static final String subject = "Ihr Zertifikat ";
 
-    private static final String text = "Sehr geehrter Herr/Frau x, \n hier ihr Zertifikat!"; //TODO: beides aus einer Config-datei laden
+    private static final String text = "Sehr geehrter Herr/Frau {lastname}, \n\nIhr Selbsttest am {date} war {result}. " +
+            "\nIm Anhang finden Sie Ihr Testat. \n\nMit freundlichen Grüßen\nTestzentrum Hochschule Ansbach"; //TODO: beides aus einer Config-datei laden
 
     public static void initSession(String username, String password, String host){
+
         //Get properties object
         Properties props = new Properties();
         props.put("mail.smtp.host", host);
@@ -41,19 +40,20 @@ public class Email {
     public static void sendEmail(TestingResult result) throws MessagingException{
         String to = result.email;
 
-            MimeMessage message = new MimeMessage(session);
-            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+        MimeMessage message = new MimeMessage(session);
+        message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
             message.setSubject(subject);
             message.setFrom("testzentrum@hs-ansbach.de");
 
             BodyPart mailContent = new MimeBodyPart();
-            mailContent.setText(text);
+            mailContent.setText(processEmailText(text, result));
 
             BodyPart pdf = new MimeBodyPart();
             DataSource source = new FileDataSource(result.getPDFLocation());
             pdf.setDataHandler(new DataHandler(source));
-            pdf.setFileName("Zertifikat_" + result.lastname + "_" + result.firstname +".pdf");
-            pdf.setHeader("Content-Type", "application/pdf");
+            String filename = "Zertifikat_"+ result.lastname + "_" + result.firstname +".pdf";
+            pdf.setFileName(filename );
+            pdf.setHeader("Content-Type", "application/pdf;charset=utf-8");
 
 
             Multipart multipart = new MimeMultipart();
@@ -78,5 +78,14 @@ public class Email {
             }
         }
         return i;
+    }
+
+
+    private static String processEmailText(String text, TestingResult result){
+        String output = text.replace("{lastname}", result.lastname);
+        output = output.replace("{firstname}", result.firstname);
+        output = output.replace("{date}", result.date);
+        output = output.replace("{result}", result.resultLong);
+        return output;
     }
 }
