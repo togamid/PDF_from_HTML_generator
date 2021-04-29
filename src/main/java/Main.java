@@ -39,7 +39,7 @@ public class Main {
         //insert them into the template HTML and export as PDF
         int PDFs_exported = 0;
         try {
-             PDFs_exported= ExportPDF.exportAsPdf(results, pathOutputDirectory, pathTemplate);
+            PDFs_exported = ExportPDF.exportAsPdf(results, pathOutputDirectory, pathTemplate);
         }
         catch (Exception e) {
             System.out.println("[Error] Something went wrong with the exporting: " + e.getMessage());
