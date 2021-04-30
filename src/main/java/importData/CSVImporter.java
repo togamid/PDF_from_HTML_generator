@@ -17,8 +17,6 @@ public class CSVImporter {
         return readAll(reader);
     }
 
-
-
     private static List<String[]> readAll(Reader reader) throws Exception {
         CSVReader csvReader = new CSVReaderBuilder(reader).withCSVParser(new CSVParserBuilder().withSeparator(';').build() ).build();
         //CSVReader csvReader = new CSVReader(reader);
@@ -31,6 +29,4 @@ public class CSVImporter {
         }
         return list;
     }
-
-
 }

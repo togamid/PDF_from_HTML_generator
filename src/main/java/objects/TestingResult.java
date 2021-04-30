@@ -38,7 +38,6 @@ public class TestingResult {
         this.result = values[9];
         this.usedTest = values[10];
         this.testManufacturer = values[11];
-
          */
         this.lastname = values[1];
         this.firstname = values[2];
@@ -70,8 +69,8 @@ public class TestingResult {
 
     public String getPDFLocation(){
             return pathPDF;
-
     }
+
     //returns the Path were the PDF should be placed
     public String generatePDFLocation(String directory){
         Path directoryPath = Paths.get(directory);
@@ -97,7 +96,6 @@ public class TestingResult {
                 results.add(new TestingResult(entry));
             }
         }
-
         return results;
     }
 }

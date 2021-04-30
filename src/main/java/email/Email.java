@@ -13,10 +13,11 @@ import java.util.Properties;
 public class Email {
 
     private static Session session;
-    private static final String subject = "Ihr Zertifikat ";
+    private static final String subject = "Ihr Schnelltest-Testat";
 
-    private static final String text = "Sehr geehrter Herr/Frau {lastname}, \n\nIhr Selbsttest am {date} war {result}. " +
-            "\nIm Anhang finden Sie Ihr Testat. \n\nMit freundlichen Grüßen\nTestzentrum Hochschule Ansbach"; //TODO: beides aus einer Config-datei laden
+    private static final String text = "Sehr geehrte:r Herr/Frau {lastname}, \n\nIhr Selbsttest am {date} war {result}. " +
+            "\nIm Anhang finden Sie Ihr Testat.\nDas Testat wird erst korrekt angezeigt, wenn Sie es heruntergeladen haben. " +
+            "\n\nMit freundlichen Grüßen\nTestzentrum Hochschule Ansbach"; //TODO: beides aus einer Config-datei laden
 
     public static void initSession(String username, String password, String host){
 
@@ -74,7 +75,8 @@ public class Email {
                 i++;
             } catch (Exception e)
             {
-                System.out.println("Could not send message at " + result.email);
+                System.out.println("Could not send message to " + result.email +". The corresponding PDF is " +
+                        "found at" + result.getPDFLocation() + ". Please try again manually later");
             }
         }
         return i;

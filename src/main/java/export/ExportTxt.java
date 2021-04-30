@@ -24,6 +24,5 @@ public class ExportTxt {
             writer.printf("Mein tolles zertifikat! mein name ist %s", result.lastname);
             writer.close();
         }
-
     }
 }

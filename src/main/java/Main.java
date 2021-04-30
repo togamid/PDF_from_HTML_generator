@@ -1,7 +1,5 @@
-
 import email.Email;
 import export.ExportPDF;
-
 import importData.CSVImporter;
 import objects.TestingResult;
 
@@ -73,7 +71,6 @@ public class Main {
         }while(tmp.isEmpty());
         pathInput = tmp;
 
-
         Path directoryPath = Paths.get(pathTemplate);
         if(!Files.exists(directoryPath)) {
             do {
@@ -85,7 +82,6 @@ public class Main {
             } while (tmp.isEmpty());
             pathTemplate = tmp;
         }
-
 
         do {
             System.out.print("\nBitte geben Sie den Pfad zum Ausgabeverzeichnis an: ");
