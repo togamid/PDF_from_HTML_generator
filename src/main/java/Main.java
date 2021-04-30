@@ -8,12 +8,15 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Main {
     private static String pathInput;
     private static String pathTemplate = "template.pdf";
     private static String pathOutputDirectory;
+    private static String selectedDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
     public static void main(String[] args){
 
@@ -37,6 +40,9 @@ public class Main {
         }
         //parse them into testingResult objects
         List<TestingResult> results = TestingResult.parseStrings(values);
+
+        //filter unused dates
+        results.removeIf(result -> !result.date.equalsIgnoreCase(selectedDate));
 
         //insert them into the template HTML and export as PDF
         int PDFs_exported = 0;
@@ -88,6 +94,13 @@ public class Main {
             tmp = reader.readLine();
         }while(tmp.isEmpty());
         pathOutputDirectory = tmp;
+        
+        System.out.print("\nAktuell ausgewähltes Datum: "+ selectedDate +"\nWenn Sie ein anderes Datum auswählen wollen, " +
+                    "geben Sie dieses an (ansonsten einfach Enter drücken): ");
+        tmp = reader.readLine();
+        if(!tmp.isEmpty()) {
+            selectedDate = tmp;
+        }
         System.out.println("\n");
     }
 }
