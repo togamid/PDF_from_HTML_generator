@@ -27,6 +27,7 @@ public class CSVImporter {
         if(list.get(0)[0].equalsIgnoreCase("Nachname") || list.get(0)[0].equalsIgnoreCase("Antwort Nr.")){
             list.remove(0);
         }
+        System.out.println("Gelesene Datensätze:"+list.size());
         return list;
     }
 }

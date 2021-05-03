@@ -3,6 +3,8 @@ package export;
 import objects.TestingResult;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
+import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import java.io.*;
 import java.time.LocalDate;
@@ -10,14 +12,31 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ExportPDF {
+    private static final String ownerKey = "password";
 
     public static int exportAsPdf(List<TestingResult> results, String outputDirectory, String fillablePdfPath ) throws Exception {
-        PDDocument baseDocument = PDDocument.load(new File(fillablePdfPath));
-        PDAcroForm acroForm =  baseDocument.getDocumentCatalog().getAcroForm();
-        acroForm.setXFA(null);
+        //create a new Access permission to disallow modifications
+        AccessPermission ap = new AccessPermission();
+        ap.setCanExtractForAccessibility(true);
+        ap.setCanPrint(true);
+        ap.setCanPrintDegraded(true);
+        ap.setCanAssembleDocument(false);
+        ap.setCanExtractContent(false);
+        ap.setCanModify(false);
+        ap.setCanModifyAnnotations(false);
+        ap.setCanFillInForm(false);
+        ap.setReadOnly();
+        StandardProtectionPolicy standardPP = new StandardProtectionPolicy(ownerKey, "", ap);
+        standardPP.setEncryptionKeyLength(128);
+
+
 
         int i = 0;
         for (TestingResult result : results) {
+             PDDocument document = PDDocument.load(new File(fillablePdfPath));
+             PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
+             acroForm.setXFA(null);
+
             try {
                 acroForm.getField("name").setValue(result.lastname + ", " + result.firstname);
                 acroForm.getField("birthdate").setValue(result.birthdate);
@@ -40,14 +59,16 @@ public class ExportPDF {
                 }
 
                 acroForm.getField("result").setValue(resultString);
-                baseDocument.save(result.generatePDFLocation(outputDirectory));
+                document.protect(standardPP);
+                document.save(result.generatePDFLocation(outputDirectory));
+                document.close();
                 i++;
                 }
             catch(Exception e) {
                     System.out.println("PDF for " + result.lastname +", " + result.firstname + " could not be generated!");
+                    System.out.println(e.getMessage());
             }
         }
-        baseDocument.close();
         return i;
     }
 }

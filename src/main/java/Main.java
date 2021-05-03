@@ -4,6 +4,7 @@ import importData.CSVImporter;
 import objects.TestingResult;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,6 +52,7 @@ public class Main {
         }
         catch (Exception e) {
             System.out.println("[Error] Something went wrong with the exporting: " + e.getMessage());
+            e.printStackTrace();
         }
 
         System.out.println(PDFs_exported + " PDFs erzeugt. Versende E-Mails...");
@@ -89,11 +91,19 @@ public class Main {
             pathTemplate = tmp;
         }
 
-        do {
-            System.out.print("\nBitte geben Sie den Pfad zum Ausgabeverzeichnis an: ");
-            tmp = reader.readLine();
-        }while(tmp.isEmpty());
-        pathOutputDirectory = tmp;
+
+        File outputDirectory = new File(LocalDate.now().format(DateTimeFormatter.ofPattern("dd_MM_yyyy")));
+        if(!outputDirectory.exists()){
+            outputDirectory.mkdir();
+            pathOutputDirectory = outputDirectory.getPath();
+        }else {
+            do {
+                System.out.println("\nDas Verzeichnis " + outputDirectory.getPath() + " existiert bereits. Wenn Sie es auswählen wollen, geben Sie den Namen explizit an.");
+                System.out.print("Bitte geben Sie den Pfad zum Ausgabeverzeichnis an: ");
+                tmp = reader.readLine();
+            }while(tmp.isEmpty());
+            pathOutputDirectory = tmp;
+        }
         
         System.out.print("\nAktuell ausgewähltes Datum: "+ selectedDate +"\nWenn Sie ein anderes Datum auswählen wollen, " +
                     "geben Sie dieses an (ansonsten einfach Enter drücken): ");
