@@ -36,6 +36,7 @@ public class ExportPDF {
              PDDocument document = PDDocument.load(new File(fillablePdfPath));
              PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
              acroForm.setXFA(null);
+             acroForm.setNeedAppearances(false);
 
             try {
                 acroForm.getField("name").setValue(result.lastname + ", " + result.firstname);
@@ -59,6 +60,7 @@ public class ExportPDF {
                 }
 
                 acroForm.getField("result").setValue(resultString);
+                acroForm.flatten();
                 document.protect(standardPP);
                 document.save(result.generatePDFLocation(outputDirectory));
                 document.close();
